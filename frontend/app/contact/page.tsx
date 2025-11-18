@@ -11,7 +11,7 @@ export default function ContactPage() {
       <main className="pt-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 text-charcoal">Contact Us</h1>
-          <p className="text-center text-gray-600 mb-12">Get in touch with us. We'd love to hear from you.</p>
+          <p className="text-center text-gray-600 mb-12">Get in touch with us. We&apos;d love to hear from you.</p>
 
           {/* Contact Info */}
           <div className="max-w-2xl mx-auto">

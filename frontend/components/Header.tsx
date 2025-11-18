@@ -277,13 +277,13 @@ const Header = () => {
                           }}
                           className="w-full text-sm text-deepBlue hover:underline text-center"
                         >
-                          View all results for "{searchQuery}"
+                          View all results for &quot;{searchQuery}&quot;
                         </button>
                       </div>
                     </div>
                   ) : (
                     <div className="p-4 text-center text-gray-500 text-sm">
-                      No products found starting with "{searchQuery}"
+                      No products found starting with &quot;{searchQuery}&quot;
                     </div>
                   )}
                 </div>

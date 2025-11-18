@@ -72,7 +72,7 @@ export default function OrdersPage() {
 
           {orders.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg mb-4">You haven't placed any orders yet</p>
+              <p className="text-gray-500 text-lg mb-4">You haven&apos;t placed any orders yet</p>
               <Link
                 href="/shop"
                 className="bg-deepBlue text-white px-6 py-3 rounded-lg hover:bg-blue-800 transition-colors inline-block"
