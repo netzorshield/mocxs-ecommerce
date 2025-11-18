@@ -7,6 +7,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Force rebuild
   // Ignore TypeScript errors during build (if any)
   typescript: {
     ignoreBuildErrors: true,
