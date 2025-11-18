@@ -1,0 +1,25 @@
+{
+  "name": "mocxs-ecommerce",
+  "version": "1.0.0",
+  "description": "MOCXS Premium Indian Clothing and Lifestyle Brand E-commerce Website",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "build:production": "cd frontend && npm install --production=false && npm run build",
+    "start:production": "pm2 start ecosystem.config.js",
+    "stop:production": "pm2 stop ecosystem.config.js",
+    "restart:production": "pm2 restart ecosystem.config.js",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "install:windows": "npm install && cd frontend && npm install && cd ..\\backend && npm install",
+    "install:production": "npm install --production && cd backend && npm install --production && cd ../frontend && npm install --production"
+  },
+  "keywords": ["ecommerce", "mocxs", "clothing", "lifestyle"],
+  "author": "MOCXS",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
