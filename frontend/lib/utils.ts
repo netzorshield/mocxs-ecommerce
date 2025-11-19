@@ -34,24 +34,36 @@ export const validatePincode = (pincode: string): boolean => {
 // Convert relative image paths to full URLs
 export const getImageUrl = (image: string | undefined | null): string => {
   if (!image) {
-    return '/placeholder-image.jpg'; // Fallback image
+    return PLACEHOLDER_IMAGE; // Use placeholder instead of broken image
   }
   
-  // If already a full URL (http/https), return as is
+  // If already a full URL (http/https), ensure HTTPS in production
   if (image.startsWith('http://') || image.startsWith('https://')) {
+    // Force HTTPS in production to avoid mixed content issues
+    if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+      return image.replace('http://', 'https://');
+    }
     return image;
   }
   
   // If it's a relative path starting with /uploads/, convert to full URL
   if (image.startsWith('/uploads/')) {
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
-    return `${API_BASE_URL}${image}`;
+    // Ensure HTTPS in production
+    const baseUrl = typeof window !== 'undefined' && window.location.protocol === 'https:' 
+      ? API_BASE_URL.replace('http://', 'https://')
+      : API_BASE_URL;
+    return `${baseUrl}${image}`;
   }
   
   // If it's already a full path but missing protocol, assume it's from our API
   if (image.startsWith('/')) {
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
-    return `${API_BASE_URL}${image}`;
+    // Ensure HTTPS in production
+    const baseUrl = typeof window !== 'undefined' && window.location.protocol === 'https:' 
+      ? API_BASE_URL.replace('http://', 'https://')
+      : API_BASE_URL;
+    return `${baseUrl}${image}`;
   }
   
   // Return as is if it doesn't match any pattern
