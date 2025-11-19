@@ -2,8 +2,9 @@
 // Production deployment configuration
 const nextConfig = {
   reactStrictMode: true,
-  // Output configuration for production
-  output: 'standalone',
+  // Note: 'standalone' output is for Docker, not Vercel
+  // Vercel handles static files automatically, so we don't need standalone
+  // output: 'standalone',
   // Ignore ESLint errors during build (we'll fix warnings later)
   eslint: {
     ignoreDuringBuilds: true,
