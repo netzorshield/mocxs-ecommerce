@@ -19,11 +19,27 @@
 - [x] **Result: Node.js NOT supported on Premium Web Hosting**
 - [x] **Decision: Using FREE hosting (Vercel + Railway)**
 
-## Step 4: Prepare for Free Deployment ⏳
+## Step 4: Prepare for Free Deployment ✅
 - [x] GitHub account exists
-- [ ] Project pushed to GitHub
-- [ ] Vercel account created
-- [ ] Railway account created
+- [x] GitHub repository created (private)
+- [x] GitHub authentication setup
+- [x] Project pushed to GitHub ✅
+
+## Step 5: Deploy Frontend to Vercel ✅
+- [x] Vercel account created
+- [x] Connected GitHub to Vercel
+- [x] Root Directory set to `frontend`
+- [x] Deployed using Vercel CLI
+- [x] Frontend URL: https://frontend-dozm1fxke-netzors-projects.vercel.app
+- [ ] Environment variables configured (will do after backend)
+
+## Step 6: Deploy Backend to Railway ⏳
+- [x] Railway account created
+- [x] Root Directory set to `backend`
+- [x] Environment variables added
+- [x] MongoDB Atlas IP whitelisted
+- [ ] Backend deployment in progress
+- [ ] Backend URL obtained
 
 ## Step 4: Prepare Razorpay ⏳
 - [ ] Razorpay account ready

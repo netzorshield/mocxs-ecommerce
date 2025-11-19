@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import api from '@/lib/api';
 import { FiFilter, FiX } from 'react-icons/fi';
+import { getImageUrl, PLACEHOLDER_IMAGE } from '@/lib/utils';
 
 export default function ShopPage() {
   const searchParams = useSearchParams();
@@ -141,10 +142,15 @@ export default function ShopPage() {
                       <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
                         {product.images && product.images[0] ? (
                           <Image
-                            src={product.images[0]}
+                            src={getImageUrl(product.images[0])}
                             alt={product.name}
                             fill
                             className="object-cover group-hover:scale-110 transition-transform duration-300"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = PLACEHOLDER_IMAGE;
+                            }}
+                            unoptimized={getImageUrl(product.images[0]).includes('railway.app')}
                           />
                         ) : (
                           <div className="w-full h-full bg-gray-200" />

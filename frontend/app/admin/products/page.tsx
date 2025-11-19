@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getImageUrl, PLACEHOLDER_IMAGE } from '@/lib/utils';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import api from '@/lib/api';
@@ -108,10 +109,15 @@ export default function AdminProducts() {
                       {product.images && product.images[0] ? (
                         <div className="relative w-16 h-16">
                           <Image
-                            src={product.images[0]}
+                            src={getImageUrl(product.images[0])}
                             alt={product.name}
                             fill
                             className="object-cover rounded"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = PLACEHOLDER_IMAGE;
+                            }}
+                            unoptimized={getImageUrl(product.images[0]).includes('railway.app')}
                           />
                         </div>
                       ) : (

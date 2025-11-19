@@ -44,7 +44,17 @@ const nextConfig = {
         hostname: '**.amazon.com',
         pathname: '/**',
       },
-      // Allow images from production API
+      // Allow images from production API (Railway)
+      {
+        protocol: 'https',
+        hostname: 'mocxs-ecommerce-production.up.railway.app',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.up.railway.app',
+        pathname: '/uploads/**',
+      },
       {
         protocol: 'https',
         hostname: '**',

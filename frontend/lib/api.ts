@@ -24,5 +24,20 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export default api;
+// Handle response errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // If token is invalid (401), remove it
+    if (error.response?.status === 401 && error.config?.url !== '/auth/login' && error.config?.url !== '/auth/register') {
+      Cookies.remove('token');
+      // Only redirect if we're not already on login page
+      if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
+export default api;

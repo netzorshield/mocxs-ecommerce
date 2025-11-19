@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   title: 'MOCXS - Redefine Comfort. Redefine You.',
   description: 'Premium Indian clothing and lifestyle brand. Shop men\'s, women\'s, kids wear, innerwear, sportswear, and accessories.',
   keywords: 'MOCXS, clothing, fashion, India, premium, lifestyle, innerwear, sportswear',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
 }
 
 export default function RootLayout({

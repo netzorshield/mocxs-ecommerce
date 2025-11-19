@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { FiTrash2, FiPlus, FiMinus } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/lib/storage';
+import { getImageUrl, PLACEHOLDER_IMAGE } from '@/lib/utils';
 
 export default function CartPage() {
   const router = useRouter();
@@ -88,7 +89,17 @@ export default function CartPage() {
                 <div key={index} className="flex gap-4 bg-white p-4 rounded-lg shadow-sm border">
                   <div className="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                     {item.image ? (
-                      <Image src={item.image} alt={item.name} fill className="object-cover" />
+                      <Image 
+                        src={getImageUrl(item.image)} 
+                        alt={item.name} 
+                        fill 
+                        className="object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = PLACEHOLDER_IMAGE;
+                        }}
+                        unoptimized={getImageUrl(item.image).includes('railway.app')}
+                      />
                     ) : (
                       <div className="w-full h-full bg-gray-200" />
                     )}

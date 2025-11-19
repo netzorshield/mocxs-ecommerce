@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { login, register, getAuthToken } from '@/lib/auth';
+import { login, register, getAuthToken, getCurrentUser, removeAuthToken } from '@/lib/auth';
 import toast from 'react-hot-toast';
 
 export default function LoginPage() {
@@ -18,13 +18,27 @@ export default function LoginPage() {
     password: '',
   });
   const [loading, setLoading] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
-    const token = getAuthToken();
-    if (token) {
-      router.push('/');
-    }
-  }, []);
+    const checkAuth = async () => {
+      const token = getAuthToken();
+      if (token) {
+        // Verify token is valid by checking current user
+        const user = await getCurrentUser();
+        if (user) {
+          // Valid token, redirect to home
+          const redirect = searchParams.get('redirect') || '/';
+          router.push(redirect);
+        } else {
+          // Invalid token, remove it
+          removeAuthToken();
+        }
+      }
+      setCheckingAuth(false);
+    };
+    checkAuth();
+  }, [router, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,11 +56,32 @@ export default function LoginPage() {
         router.push('/');
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Authentication failed');
+      console.error('Login error:', error);
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.errors?.[0]?.msg ||
+                          error.message || 
+                          'Authentication failed';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
   };
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main className="pt-16">
+          <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="bg-white p-8 rounded-lg shadow-md border text-center">
+              <p>Loading...</p>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">

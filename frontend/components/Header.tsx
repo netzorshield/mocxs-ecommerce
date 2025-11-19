@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { FiMenu, FiX, FiShoppingCart, FiUser, FiSearch } from 'react-icons/fi';
 import { getAuthToken, logout, getCurrentUser } from '@/lib/auth';
 import api from '@/lib/api';
+import { getImageUrl, PLACEHOLDER_IMAGE } from '@/lib/utils';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -248,10 +249,15 @@ const Header = () => {
                           <div className="relative w-12 h-12 bg-gray-100 rounded overflow-hidden flex-shrink-0">
                             {product.images && product.images[0] ? (
                               <Image
-                                src={product.images[0]}
+                                src={getImageUrl(product.images[0])}
                                 alt={product.name}
                                 fill
                                 className="object-cover"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.src = PLACEHOLDER_IMAGE;
+                                }}
+                                unoptimized={getImageUrl(product.images[0]).includes('railway.app')}
                               />
                             ) : (
                               <div className="w-full h-full bg-gray-200" />

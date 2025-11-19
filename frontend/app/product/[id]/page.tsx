@@ -9,6 +9,7 @@ import api from '@/lib/api';
 import { FiShoppingCart, FiHeart, FiStar } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { getLocalStorage, setLocalStorage } from '@/lib/storage';
+import { getImageUrl, PLACEHOLDER_IMAGE } from '@/lib/utils';
 
 export default function ProductPage() {
   const params = useParams();
@@ -59,7 +60,7 @@ export default function ProductPage() {
       product: product._id,
       name: product.name,
       price: product.price,
-      image: product.images?.[0] || '',
+      image: getImageUrl(product.images?.[0]),
       size: selectedSize,
       color: selectedColor,
       quantity,
@@ -124,10 +125,15 @@ export default function ProductPage() {
               <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
                 {product.images && product.images[selectedImage] ? (
                   <Image
-                    src={product.images[selectedImage]}
+                    src={getImageUrl(product.images[selectedImage])}
                     alt={product.name}
                     fill
                     className="object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = PLACEHOLDER_IMAGE;
+                    }}
+                    unoptimized={getImageUrl(product.images[selectedImage]).includes('railway.app')}
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200" />
@@ -143,7 +149,17 @@ export default function ProductPage() {
                         selectedImage === index ? 'border-deepBlue' : 'border-transparent'
                       }`}
                     >
-                      <Image src={img} alt={`${product.name} ${index + 1}`} fill className="object-cover" />
+                      <Image 
+                        src={getImageUrl(img)} 
+                        alt={`${product.name} ${index + 1}`} 
+                        fill 
+                        className="object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = PLACEHOLDER_IMAGE;
+                        }}
+                        unoptimized={getImageUrl(img).includes('railway.app')}
+                      />
                     </button>
                   ))}
                 </div>
