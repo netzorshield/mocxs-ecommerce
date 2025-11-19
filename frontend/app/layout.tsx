@@ -12,10 +12,10 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
   icons: {
     icon: [
-      { url: '/icon.png', type: 'image/png' },
       { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png' },
     ],
-    shortcut: '/icon.png',
+    shortcut: '/favicon.ico',
     apple: '/apple-touch-icon.png',
   },
 }
