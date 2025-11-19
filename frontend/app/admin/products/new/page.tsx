@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import api from '@/lib/api';
 import { getCurrentUser, getAuthToken } from '@/lib/auth';
+import { getImageUrl } from '@/lib/utils';
 import { FiArrowLeft, FiSave, FiUpload, FiX } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -16,16 +17,6 @@ export default function NewProduct() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imageMode, setImageMode] = useState<'url' | 'upload'>('upload'); // Default to upload
-  
-  // Get API base URL for image previews
-  const getImageUrl = (image: string) => {
-    if (image.startsWith('http')) {
-      return image;
-    }
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-    const baseUrl = apiUrl.replace('/api', '');
-    return `${baseUrl}${image}`;
-  };
   
   const [formData, setFormData] = useState({
     name: '',

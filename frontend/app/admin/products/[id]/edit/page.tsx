@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import api from '@/lib/api';
 import { getCurrentUser, getAuthToken } from '@/lib/auth';
+import { getImageUrl } from '@/lib/utils';
 import { FiArrowLeft, FiSave, FiUpload, FiX } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -32,15 +33,6 @@ export default function EditProduct() {
     featured: false,
   });
 
-  // Get API base URL for image previews
-  const getImageUrl = (image: string) => {
-    if (image.startsWith('http')) {
-      return image;
-    }
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-    const baseUrl = apiUrl.replace('/api', '');
-    return `${baseUrl}${image}`;
-  };
 
   useEffect(() => {
     checkAdmin();
@@ -86,13 +78,24 @@ export default function EditProduct() {
     setSaving(true);
 
     try {
-      // Process images - keep full URLs as is, convert local paths to full URLs
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+      // Process images - use getImageUrl to ensure proper URL format
+      // But keep the original format for saving (don't double-convert)
       const processedImages = formData.images.map(img => {
-        if (img.startsWith('/uploads/')) {
-          // Local upload path - convert to full URL
-          return `${API_BASE_URL}${img}`;
+        // If it's already a full URL, keep it
+        if (img.startsWith('http://') || img.startsWith('https://')) {
+          return img;
         }
+        // If it's a relative path starting with /uploads/, convert to full URL
+        if (img.startsWith('/uploads/')) {
+          const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+          // Ensure HTTPS in production
+          let baseUrl = API_BASE_URL;
+          if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+            baseUrl = API_BASE_URL.replace('http://', 'https://');
+          }
+          return `${baseUrl}${img}`;
+        }
+        // Return as is for other cases
         return img;
       });
 
@@ -408,7 +411,11 @@ export default function EditProduct() {
                           alt={`Preview ${index + 1}`}
                           className="w-full h-32 object-cover rounded-lg border"
                           onError={(e) => {
+                            console.error('Image failed to load:', image, 'Resolved URL:', getImageUrl(image));
                             (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="14" dy="10.5" font-weight="bold" x="50%25" y="50%25" text-anchor="middle"%3ENo Image%3C/text%3E%3C/svg%3E';
+                          }}
+                          onLoad={() => {
+                            console.log('Image loaded successfully:', image, 'Resolved URL:', getImageUrl(image));
                           }}
                         />
                         <button
