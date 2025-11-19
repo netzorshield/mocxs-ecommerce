@@ -43,14 +43,20 @@ export const getImageUrl = (image: string | undefined | null): string => {
     // Force HTTPS in production to avoid mixed content issues
     if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
       const httpsUrl = image.replace('http://', 'https://');
-      console.log('getImageUrl: Converted HTTP to HTTPS', { original: image, converted: httpsUrl });
       return httpsUrl;
     }
     return image;
   }
   
-  // Get API base URL
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+  // Get API base URL - handle both with and without /api suffix
+  let API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  
+  // Remove /api suffix if present to get base URL
+  if (API_BASE_URL.endsWith('/api')) {
+    API_BASE_URL = API_BASE_URL.replace('/api', '');
+  } else if (API_BASE_URL.endsWith('/api/')) {
+    API_BASE_URL = API_BASE_URL.replace('/api/', '');
+  }
   
   // Ensure HTTPS in production
   let baseUrl = API_BASE_URL;
@@ -58,22 +64,29 @@ export const getImageUrl = (image: string | undefined | null): string => {
     baseUrl = API_BASE_URL.replace('http://', 'https://');
   }
   
+  // Remove trailing slash from baseUrl
+  baseUrl = baseUrl.replace(/\/$/, '');
+  
   // If it's a relative path starting with /uploads/, convert to full URL
   if (image.startsWith('/uploads/')) {
     const fullUrl = `${baseUrl}${image}`;
-    console.log('getImageUrl: Converted /uploads/ path', { original: image, baseUrl, fullUrl });
     return fullUrl;
   }
   
   // If it's already a full path but missing protocol, assume it's from our API
   if (image.startsWith('/')) {
     const fullUrl = `${baseUrl}${image}`;
-    console.log('getImageUrl: Converted / path', { original: image, baseUrl, fullUrl });
     return fullUrl;
   }
   
-  // Return as is if it doesn't match any pattern
-  console.warn('getImageUrl: Unknown image format', { image });
+  // If image doesn't start with /, assume it's a relative path from uploads
+  // This handles cases where image might be stored as just "filename.jpg"
+  if (!image.includes('://') && !image.startsWith('/')) {
+    const fullUrl = `${baseUrl}/uploads/products/${image}`;
+    return fullUrl;
+  }
+  
+  // Return as is if it doesn't match any pattern (might be external URL without protocol)
   return image;
 };
 
