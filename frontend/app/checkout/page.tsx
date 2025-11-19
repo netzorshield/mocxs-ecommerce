@@ -9,6 +9,7 @@ import { getAuthToken, getCurrentUser } from '@/lib/auth';
 import toast from 'react-hot-toast';
 import Script from 'next/script';
 import { getLocalStorage, removeLocalStorage } from '@/lib/storage';
+import { validatePhone } from '@/lib/utils';
 
 declare global {
   interface Window {
@@ -82,6 +83,13 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate phone number
+    if (!validatePhone(formData.phone)) {
+      toast.error('Please enter a valid 10-digit phone number');
+      return;
+    }
+
     setLoading(true);
 
     try {
