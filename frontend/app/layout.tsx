@@ -11,7 +11,10 @@ export const metadata: Metadata = {
   keywords: 'MOCXS, clothing, fashion, India, premium, lifestyle, innerwear, sportswear',
   manifest: '/site.webmanifest',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/api/favicon', sizes: 'any' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
     shortcut: '/favicon.ico',
     apple: '/apple-touch-icon.png',
   },
