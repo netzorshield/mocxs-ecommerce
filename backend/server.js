@@ -36,6 +36,22 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Add CORS headers for static files (images)
+app.use('/uploads', (req, res, next) => {
+  // Set CORS headers for image requests
+  const origin = req.headers.origin;
+  if (origin && (allowedOrigins.some(allowed => origin === allowed || origin.startsWith(allowed)) || process.env.NODE_ENV !== 'production')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+  // Set content type headers for images
+  if (req.path.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i)) {
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  }
+  next();
+});
+
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
