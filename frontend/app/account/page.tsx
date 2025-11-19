@@ -8,6 +8,7 @@ import { getCurrentUser, logout } from '@/lib/auth';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
+import { validatePhone } from '@/lib/utils';
 import { FiEdit, FiTrash2, FiX } from 'react-icons/fi';
 
 export default function AccountPage() {
@@ -100,6 +101,12 @@ export default function AccountPage() {
     if (!addressForm.name || !addressForm.phone || !addressForm.addressLine1 || 
         !addressForm.city || !addressForm.state || !addressForm.pincode) {
       toast.error('Please fill in all required fields');
+      return;
+    }
+
+    // Validate phone number
+    if (!validatePhone(addressForm.phone)) {
+      toast.error('Please enter a valid 10-digit phone number');
       return;
     }
 
@@ -286,8 +293,18 @@ export default function AccountPage() {
                     required
                     value={addressForm.phone}
                     onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-deepBlue"
+                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                      addressForm.phone && !validatePhone(addressForm.phone)
+                        ? 'border-red-500 focus:ring-red-500'
+                        : 'focus:ring-deepBlue'
+                    }`}
+                    placeholder="10-digit mobile number"
                   />
+                  {addressForm.phone && !validatePhone(addressForm.phone) && (
+                    <p className="text-red-500 text-sm mt-1">
+                      Please enter a valid 10-digit phone number (starting with 6-9)
+                    </p>
+                  )}
                 </div>
               </div>
               <div>

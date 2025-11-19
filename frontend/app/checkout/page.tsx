@@ -223,8 +223,18 @@ export default function CheckoutPage() {
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-2 border rounded-lg"
+                      className={`w-full px-4 py-2 border rounded-lg ${
+                        formData.phone && !validatePhone(formData.phone) 
+                          ? 'border-red-500 focus:ring-red-500' 
+                          : ''
+                      }`}
+                      placeholder="10-digit mobile number"
                     />
+                    {formData.phone && !validatePhone(formData.phone) && (
+                      <p className="text-red-500 text-sm mt-1">
+                        Please enter a valid 10-digit phone number (starting with 6-9)
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Address Line 1 *</label>
