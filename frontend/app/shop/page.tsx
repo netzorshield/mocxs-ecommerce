@@ -147,8 +147,19 @@ export default function ShopPage() {
                             fill
                             className="object-cover group-hover:scale-110 transition-transform duration-300"
                             onError={(e) => {
+                              console.error('Image failed to load:', {
+                                original: product.images[0],
+                                url: getImageUrl(product.images[0]),
+                                product: product.name
+                              });
                               const target = e.target as HTMLImageElement;
                               target.src = PLACEHOLDER_IMAGE;
+                            }}
+                            onLoad={() => {
+                              console.log('Image loaded successfully:', {
+                                original: product.images[0],
+                                url: getImageUrl(product.images[0])
+                              });
                             }}
                             unoptimized={getImageUrl(product.images[0]).includes('railway.app')}
                           />
