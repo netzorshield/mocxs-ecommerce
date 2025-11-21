@@ -45,8 +45,16 @@ export const getApiBaseUrl = (): string => {
   
   // Ensure HTTPS in production
   let baseUrl = API_BASE_URL;
-  if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-    baseUrl = API_BASE_URL.replace('http://', 'https://');
+  if (typeof window !== 'undefined') {
+    // In browser, use current protocol and fix localhost URLs
+    if (window.location.protocol === 'https:') {
+      baseUrl = API_BASE_URL.replace('http://', 'https://');
+      // If still localhost in production, try to use Railway URL
+      if (baseUrl.includes('localhost') && !window.location.hostname.includes('localhost')) {
+        // Default to Railway production URL if localhost detected in production
+        baseUrl = 'https://mocxs-ecommerce-production.up.railway.app';
+      }
+    }
   }
   
   // Remove trailing slash from baseUrl
@@ -57,11 +65,26 @@ export const getApiBaseUrl = (): string => {
 
 // Convert relative image path to full URL
 export const convertToFullImageUrl = (imagePath: string): string => {
-  // If already a full URL, return as is
+  if (!imagePath || typeof imagePath !== 'string') {
+    console.warn('convertToFullImageUrl: Invalid image path', imagePath);
+    return PLACEHOLDER_IMAGE;
+  }
+
+  // If already a full URL, return as is (but fix protocol if needed)
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
     // Force HTTPS in production to avoid mixed content issues
     if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-      return imagePath.replace('http://', 'https://');
+      const httpsUrl = imagePath.replace('http://', 'https://');
+      // If URL contains localhost in production, it's likely wrong - try to fix it
+      if (httpsUrl.includes('localhost') && typeof window !== 'undefined') {
+        const baseUrl = getApiBaseUrl();
+        // Extract the path from the localhost URL and use production base URL
+        const urlObj = new URL(httpsUrl);
+        if (urlObj.pathname.startsWith('/uploads/')) {
+          return `${baseUrl}${urlObj.pathname}`;
+        }
+      }
+      return httpsUrl;
     }
     return imagePath;
   }
@@ -100,7 +123,16 @@ export const getImageUrl = (image: string | undefined | null): string => {
     return PLACEHOLDER_IMAGE; // Use placeholder instead of broken image
   }
   
-  return convertToFullImageUrl(image);
+  const result = convertToFullImageUrl(image);
+  
+  // Debug logging in development
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    if (image !== result) {
+      console.log('🖼️ Image URL converted:', { original: image, converted: result });
+    }
+  }
+  
+  return result;
 };
 
 // Placeholder image for missing/broken images
