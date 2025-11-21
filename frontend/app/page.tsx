@@ -40,7 +40,7 @@ export default function Home() {
     },
     {
       id: '3',
-      image: '/images/trends/men.jpg',
+      image: '/images/trends/men.webp',
       subtitle: 'Limited Edition',
       title: 'Elevate Your Wardrobe',
       description: 'Premium quality clothing for the modern lifestyle',
