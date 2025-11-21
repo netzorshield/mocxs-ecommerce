@@ -28,13 +28,13 @@ const Footer = () => {
           <div className="flex-1 md:text-right">
             <h4 className="font-semibold mb-4">Follow Us</h4>
             <div className="flex space-x-4 mt-4 md:justify-end">
-              <a href="#" className="hover:text-white transition-colors">
+              <a href="https://www.facebook.com/share/17hBZ7mYHi/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Facebook">
                 <FiFacebook className="w-5 h-5" />
               </a>
-              <a href="#" className="hover:text-white transition-colors">
+              <a href="https://www.instagram.com/mocxs.fashion?igsh=eDV3cXlmdHZtZGI2" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Instagram">
                 <FiInstagram className="w-5 h-5" />
               </a>
-              <a href="https://wa.me/yourphonenumber" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="WhatsApp">
+              <a href="https://wa.me/916235215618" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="WhatsApp">
                 <FaWhatsapp className="w-5 h-5" />
               </a>
             </div>
@@ -42,7 +42,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} All rights reserved NETZOR</p>
+          <p>&copy; {new Date().getFullYear()} All rights reserved. MOCXS</p>
         </div>
       </div>
     </footer>
