@@ -107,6 +107,12 @@ const HeroSlider = ({
               className="object-cover"
               sizes="100vw"
               quality={95}
+              unoptimized={currentSlide.image.includes('unsplash.com')}
+              onError={(e) => {
+                console.error('❌ Hero image failed to load:', currentSlide.image);
+                // Fallback to gradient on error
+                e.currentTarget.style.display = 'none';
+              }}
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-charcoal via-deepBlue to-charcoal" />

@@ -26,7 +26,7 @@ export default function Home() {
       description: 'Redefine You — MOCXS.',
       buttonText: 'Shop Now',
       buttonLink: '/shop',
-      overlay: 'gradient',
+      overlay: 'gradient' as const,
     },
     {
       id: '2',
@@ -36,17 +36,17 @@ export default function Home() {
       description: 'Discover our latest premium fashion collection designed for the modern you',
       buttonText: 'Explore Collection',
       buttonLink: '/shop?category=Women',
-      overlay: 'gradient',
+      overlay: 'gradient' as const,
     },
     {
       id: '3',
-      image: 'https://images.unsplash.com/photo-1594938291221-94f18b5b4b3e?w=1920&h=1080&fit=crop',
+      image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1920&h=1080&fit=crop&q=80',
       subtitle: 'Limited Edition',
       title: 'Elevate Your Wardrobe',
       description: 'Premium quality clothing for the modern lifestyle',
       buttonText: 'Shop Men\'s',
       buttonLink: '/shop?category=Men',
-      overlay: 'gradient',
+      overlay: 'gradient' as const,
     },
     {
       id: '4',
@@ -56,7 +56,7 @@ export default function Home() {
       description: 'Soft, comfortable, and stylish clothing for your kids',
       buttonText: 'Shop Kids',
       buttonLink: '/shop?category=Kids',
-      overlay: 'gradient',
+      overlay: 'gradient' as const,
     },
   ];
 
