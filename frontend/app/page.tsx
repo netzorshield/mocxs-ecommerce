@@ -40,7 +40,7 @@ export default function Home() {
     },
     {
       id: '3',
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop',
+      image: 'https://images.unsplash.com/photo-1594938291221-94f18b5b4b3e?w=1920&h=1080&fit=crop',
       subtitle: 'Limited Edition',
       title: 'Elevate Your Wardrobe',
       description: 'Premium quality clothing for the modern lifestyle',
