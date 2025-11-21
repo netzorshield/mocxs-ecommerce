@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import api from '@/lib/api';
 import { getCurrentUser, getAuthToken } from '@/lib/auth';
-import { getImageUrl } from '@/lib/utils';
+import { getImageUrl, convertToFullImageUrl } from '@/lib/utils';
 import { FiArrowLeft, FiSave, FiUpload, FiX } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -78,25 +78,10 @@ export default function EditProduct() {
     setSaving(true);
 
     try {
-      // Process images - use getImageUrl to ensure proper URL format
-      // But keep the original format for saving (don't double-convert)
+      // Process images - ensure all are full URLs
       const processedImages = formData.images.map(img => {
-        // If it's already a full URL, keep it
-        if (img.startsWith('http://') || img.startsWith('https://')) {
-          return img;
-        }
-        // If it's a relative path starting with /uploads/, convert to full URL
-        if (img.startsWith('/uploads/')) {
-          const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
-          // Ensure HTTPS in production
-          let baseUrl = API_BASE_URL;
-          if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-            baseUrl = API_BASE_URL.replace('http://', 'https://');
-          }
-          return `${baseUrl}${img}`;
-        }
-        // Return as is for other cases
-        return img;
+        // Convert to full URL if needed (handles both relative and full URLs)
+        return convertToFullImageUrl(img);
       });
 
       const productData = {
@@ -140,8 +125,9 @@ export default function EditProduct() {
           },
         });
 
-        // Return the full URL path
-        return response.data.url;
+        // Convert relative path to full URL immediately
+        const relativePath = response.data.url;
+        return convertToFullImageUrl(relativePath);
       });
 
       const uploadedUrls = await Promise.all(uploadPromises);

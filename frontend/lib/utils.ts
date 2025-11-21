@@ -31,23 +31,8 @@ export const validatePincode = (pincode: string): boolean => {
   return re.test(pincode);
 };
 
-// Convert relative image paths to full URLs
-export const getImageUrl = (image: string | undefined | null): string => {
-  if (!image) {
-    console.warn('getImageUrl: No image provided');
-    return PLACEHOLDER_IMAGE; // Use placeholder instead of broken image
-  }
-  
-  // If already a full URL (http/https), ensure HTTPS in production
-  if (image.startsWith('http://') || image.startsWith('https://')) {
-    // Force HTTPS in production to avoid mixed content issues
-    if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-      const httpsUrl = image.replace('http://', 'https://');
-      return httpsUrl;
-    }
-    return image;
-  }
-  
+// Get API base URL (without /api suffix) - used for image URLs
+export const getApiBaseUrl = (): string => {
   // Get API base URL - handle both with and without /api suffix
   let API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
   
@@ -67,27 +52,49 @@ export const getImageUrl = (image: string | undefined | null): string => {
   // Remove trailing slash from baseUrl
   baseUrl = baseUrl.replace(/\/$/, '');
   
+  return baseUrl;
+};
+
+// Convert relative image path to full URL
+export const convertToFullImageUrl = (imagePath: string): string => {
+  // If already a full URL, return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    // Force HTTPS in production to avoid mixed content issues
+    if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+      return imagePath.replace('http://', 'https://');
+    }
+    return imagePath;
+  }
+  
+  const baseUrl = getApiBaseUrl();
+  
   // If it's a relative path starting with /uploads/, convert to full URL
-  if (image.startsWith('/uploads/')) {
-    const fullUrl = `${baseUrl}${image}`;
-    return fullUrl;
+  if (imagePath.startsWith('/uploads/')) {
+    return `${baseUrl}${imagePath}`;
   }
   
   // If it's already a full path but missing protocol, assume it's from our API
-  if (image.startsWith('/')) {
-    const fullUrl = `${baseUrl}${image}`;
-    return fullUrl;
+  if (imagePath.startsWith('/')) {
+    return `${baseUrl}${imagePath}`;
   }
   
   // If image doesn't start with /, assume it's a relative path from uploads
-  // This handles cases where image might be stored as just "filename.jpg"
-  if (!image.includes('://') && !image.startsWith('/')) {
-    const fullUrl = `${baseUrl}/uploads/products/${image}`;
-    return fullUrl;
+  if (!imagePath.includes('://') && !imagePath.startsWith('/')) {
+    return `${baseUrl}/uploads/products/${imagePath}`;
   }
   
-  // Return as is if it doesn't match any pattern (might be external URL without protocol)
-  return image;
+  // Return as is if it doesn't match any pattern
+  return imagePath;
+};
+
+// Convert relative image paths to full URLs
+export const getImageUrl = (image: string | undefined | null): string => {
+  if (!image) {
+    console.warn('getImageUrl: No image provided');
+    return PLACEHOLDER_IMAGE; // Use placeholder instead of broken image
+  }
+  
+  return convertToFullImageUrl(image);
 };
 
 // Placeholder image for missing/broken images
