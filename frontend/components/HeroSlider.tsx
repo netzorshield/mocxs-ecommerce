@@ -107,7 +107,12 @@ const HeroSlider = ({
               className="object-cover"
               sizes="100vw"
               quality={95}
-              unoptimized={currentSlide.image.startsWith('http') && !currentSlide.image.includes('localhost')}
+              unoptimized={
+                // Disable optimization for external URLs or local static files
+                currentSlide.image.startsWith('http') || 
+                currentSlide.image.startsWith('/images/') ||
+                currentSlide.image.endsWith('.webp')
+              }
               onError={(e) => {
                 console.error('❌ Hero image failed to load:', currentSlide.image);
                 // Fallback to gradient on error
