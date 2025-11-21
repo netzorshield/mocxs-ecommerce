@@ -135,6 +135,11 @@ export const getImageUrl = (image: string | undefined | null): string => {
   return result;
 };
 
+// Check if image URL is from Railway (ephemeral storage - may be lost on redeploy)
+export const isRailwayImage = (imageUrl: string): boolean => {
+  return imageUrl.includes('railway.app') || imageUrl.includes('up.railway.app');
+};
+
 // Placeholder image for missing/broken images
 export const PLACEHOLDER_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2U1ZTdlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBJbWFnZTwvdGV4dD48L3N2Zz4=';
 
