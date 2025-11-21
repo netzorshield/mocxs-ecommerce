@@ -66,15 +66,20 @@ export const convertToFullImageUrl = (imagePath: string): string => {
     return imagePath;
   }
   
-  const baseUrl = getApiBaseUrl();
-  
-  // If it's a relative path starting with /uploads/, convert to full URL
-  if (imagePath.startsWith('/uploads/')) {
-    return `${baseUrl}${imagePath}`;
+  // Static files in public folder (like /images/, /favicon.ico, etc.) should be left as-is
+  // These are served directly by Next.js and don't need API base URL
+  if (imagePath.startsWith('/images/') || 
+      imagePath.startsWith('/favicon') || 
+      imagePath.startsWith('/icon') ||
+      imagePath.startsWith('/robots.txt') ||
+      imagePath.startsWith('/_next/')) {
+    return imagePath;
   }
   
-  // If it's already a full path but missing protocol, assume it's from our API
-  if (imagePath.startsWith('/')) {
+  const baseUrl = getApiBaseUrl();
+  
+  // If it's a relative path starting with /uploads/, convert to full URL (backend API)
+  if (imagePath.startsWith('/uploads/')) {
     return `${baseUrl}${imagePath}`;
   }
   
@@ -83,7 +88,8 @@ export const convertToFullImageUrl = (imagePath: string): string => {
     return `${baseUrl}/uploads/products/${imagePath}`;
   }
   
-  // Return as is if it doesn't match any pattern
+  // For other paths starting with /, leave as-is (likely static files or already correct)
+  // This prevents breaking static assets
   return imagePath;
 };
 
