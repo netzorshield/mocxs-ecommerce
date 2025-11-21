@@ -185,3 +185,6 @@ Both should return `True`.
 
 **The favicon should now appear in the Network tab!** 🎉
 
+
+
+

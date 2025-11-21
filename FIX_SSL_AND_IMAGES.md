@@ -203,3 +203,6 @@ This bypasses Next.js image optimization which might be causing problems.
 
 **Let me know what errors you see in the browser console, and I'll provide specific fixes!**
 
+
+
+

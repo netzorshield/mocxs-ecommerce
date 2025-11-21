@@ -103,3 +103,6 @@ I can help you copy them to the correct locations!
 
 **Tell me where your favicon files are, and I'll help you replace them!** 🎨
 
+
+
+

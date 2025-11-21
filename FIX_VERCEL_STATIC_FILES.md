@@ -160,3 +160,6 @@ After deployment:
 
 **The rewrites should make the files accessible!** 🎉
 
+
+
+

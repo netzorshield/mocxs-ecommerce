@@ -241,3 +241,6 @@ NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_... (your test key)
 
 **This is a clean solution that should fix everything!** 🎉
 
+
+
+

@@ -97,3 +97,6 @@ icons: {
 
 **Your `icon.png` should now appear as the favicon!** 🎉
 
+
+
+

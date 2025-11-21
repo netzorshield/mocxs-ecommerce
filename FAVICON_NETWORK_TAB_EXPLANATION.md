@@ -144,3 +144,6 @@ Both should load your icon (not 404).
 
 **If favicon appears in browser tab, it's working!** Even if you don't see it in Network tab. 🎉
 
+
+
+

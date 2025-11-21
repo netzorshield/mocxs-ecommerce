@@ -175,3 +175,6 @@ After deployment, these URLs should work:
 
 **The favicon should now be accessible!** 🎉
 
+
+
+
